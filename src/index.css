@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  background: #F8F6F4;
+  color: #1A1A1A;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #4A4A4A; border-radius: 8px; }
+
+input, select, textarea { font-family: inherit; color: #1A1A1A; }
+
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 8px); }
