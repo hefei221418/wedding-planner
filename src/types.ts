@@ -88,4 +88,6 @@ export interface AppData {
   cars: Car[]
   inviteCode: string
   version?: number
+  _ts?: number
+  _syncAt?: number
 }

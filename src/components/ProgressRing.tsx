@@ -14,8 +14,8 @@ export default function ProgressRing({ percent, label, sub, color }: Props) {
           strokeDasharray={c} strokeDashoffset={offset} strokeLinecap="round"
           style={{ transition: 'stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1)' }} />
       </svg>
-      <span className="text-xs font-semibold text-softink">{label}</span>
-      {sub && <span className="text-[10px] text-softink/70">{sub}</span>}
+      <span className="text-xs font-semibold text-soft">{label}</span>
+      {sub && <span className="text-[10px] text-soft">{sub}</span>}
     </div>
   )
 }

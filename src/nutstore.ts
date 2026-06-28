@@ -1,46 +1,29 @@
-// 坚果云 WebDAV — 国内直连，无 CORS 问题
+// Upstash KV 数据库
 import { AppData } from './types'
-import { hashStr } from './store'
 
-const DAV = 'https://dav.jianguoyun.com/dav/'
-const USER = '2214181104@qq.com'
-const PASS = 'aktnrk8dcptkseyc'
-const FILE = 'wedding-data.json'
-
-function auth() { return 'Basic ' + btoa(USER + ':' + PASS) }
-
-function encode(d: AppData): string {
-  return btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(d))))
-}
-function decode(t: string): AppData | null {
-  try {
-    const b = Uint8Array.from(atob(t), c => c.charCodeAt(0))
-    return JSON.parse(new TextDecoder().decode(b))
-  } catch { return null }
-}
+const API = '/api/data'
 
 export function hasWebDAVPass(): boolean { return true }
 export function setWebDAVPass(_p: string) {}
 
 export async function nutUpload(data: AppData): Promise<string | null> {
   try {
-    const resp = await fetch(DAV + FILE, {
+    const resp = await fetch(API, {
       method: 'PUT',
-      headers: { 'Authorization': auth(), 'Content-Type': 'application/octet-stream' },
-      body: new Blob([encode(data)]),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     })
-    return (resp.ok || resp.status === 201) ? 'ok' : null
+    return resp.ok ? 'ok' : null
   } catch { return null }
 }
 
 export async function nutDownload(): Promise<{ data: AppData; hash: string; remoteChanged: boolean } | null> {
   try {
-    const resp = await fetch(DAV + FILE, { headers: { 'Authorization': auth() } })
+    const resp = await fetch(API)
     if (!resp.ok) return null
-    const text = await resp.text()
-    const data = decode(text)
+    const data = await resp.json()
     if (!data?.weddingInfo?.weddingDate) return null
-    return { data, hash: hashStr(text), remoteChanged: true }
+    return { data, hash: JSON.stringify(data), remoteChanged: true }
   } catch { return null }
 }
 
